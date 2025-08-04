@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+
+    <!-- Dashboard Template Styles -->
+    <link rel="stylesheet" href="{% static 'adminhome/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminhome/assets/vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'adminhome/assets/css/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'adminhome/assets/images/favicon.ico' %}" />
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <a class="navbar-brand" href="#">
+                <h1 class="m-0 text-primary"><font color="#fe5d37"><i class="fa fa-book-reader me-3"></i>ALL LEARN</font></h1>
+            </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-stretch">
+            <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item nav-profile dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <div class="nav-profile-img">
+                            <img src="{% static 'adminhome/assets/images/faces/face3.jpg' %}" alt="image">
+                        </div>
+                        <div class="nav-profile-text">
+                            <p class="mb-1 text-black">{{ user.username }}</p>
+                        </div>
+                    </a>
+                    <div class="dropdown-menu navbar-dropdown">
+                        <a class="dropdown-item" href="#">
+                            <i class="mdi mdi-account me-2 text-success"></i> Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'logout' %}">
+                            <i class="mdi mdi-logout me-2 text-primary"></i> Signout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">
+                        <span class="menu-title">Home</span>
+                        <i class="mdi mdi-home menu-icon"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'recommend' %}">
+                        <span class="menu-title">📘 Get Recommendation</span>
+                        <i class="mdi mdi-lightbulb menu-icon"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'quiz' %}">
+                        <span class="menu-title">📝 Generate Quiz</span>
+                        <i class="mdi mdi-pencil menu-icon"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'translate' %}">
+                        <span class="menu-title">🌐 Translate</span>
+                        <i class="mdi mdi-translate menu-icon"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Panel -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+
+                <div class="row">
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Welcome, {{ user.username }}!</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Your Progress</h4>
+                                <pre>{{ user.progress|json_script:"progress-data" }}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+
+    <!-- Scripts -->
+    <script src="{% static 'adminhome/assets/vendors/js/vendor.bundle.base.js' %}"></script>
+    <script src="{% static 'adminhome/assets/js/off-canvas.js' %}"></script>
+    <script src="{% static 'adminhome/assets/js/misc.js' %}"></script>
+    <script>
+  // Get CSRF token from cookie
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let cookie of cookies) {
+              const trimmed = cookie.trim();
+              if (trimmed.startsWith(name + '=')) {
+                  cookieValue = decodeURIComponent(trimmed.slice(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+a
+  const csrftoken = getCookie('csrftoken');
+
+  // Example: Fetch to API with CSRF token
+  function callLearningAgent() {
+      fetch('/api/get_learning_plan/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': csrftoken
+          },
+          body: JSON.stringify({
+              progress: {
+                  score: 80,
+                  last_topic: "Fractions"
+              }
+          })
+      })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
+  }
+
+  // Call this on button click or page load
+</script>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+
+    <!-- Dashboard Template Styles -->
+    <link rel="stylesheet" href="{% static 'adminhome/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminhome/assets/vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'adminhome/assets/css/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'adminhome/assets/images/favicon.ico' %}" />
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <a class="navbar-brand" href="#">
+                <h1 class="m-0 text-primary"><font color="#fe5d37"><i class="fa fa-book-reader me-3"></i>ALL LEARN</font></h1>
+            </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-stretch">
+            <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item nav-profile dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <div class="nav-profile-img">
+                            <img src="{% static 'adminhome/assets/images/faces/face3.jpg' %}" alt="image">
+                        </div>
+                        <div class="nav-profile-text">
+                            <p class="mb-1 text-black">{{ user.username }}</p>
+                        </div>
+                    </a>
+                    <div class="dropdown-menu navbar-dropdown">
+                        <a class="dropdown-item" href="#">
+                            <i class="mdi mdi-account me-2 text-success"></i> Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'logout' %}">
+                            <i class="mdi mdi-logout me-2 text-primary"></i> Signout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">
+                        <span class="menu-title">Home</span>
+                        <i class="mdi mdi-home menu-icon"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'recommend' %}">
+                        <span class="menu-title">📘 Get Recommendation</span>
+                        <i class="mdi mdi-lightbulb menu-icon" style="color: var(--bs-primary);"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'quiz' %}">
+                        <span class="menu-title">📝 Generate Quiz</span>
+                        <i class="mdi mdi-pencil menu-icon"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'translate' %}">
+                        <span class="menu-title">🌐 Translate</span>
+                        <i class="mdi mdi-translate menu-icon"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Panel with RECOMMENDATION Section -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">🎯 Personalized Recommendation</h4>
+                        <form id="recommendForm" class="forms-sample">
+                            <div class="form-group">
+                                <label for="score">Progress Score</label>
+                                <input type="number" class="form-control" id="score" name="score" value="40">
+                            </div>
+                            <div class="form-group">
+                                <label for="last_topic">Last Studied Topic</label>
+                                <input type="text" class="form-control" id="last_topic" name="last_topic" value="Photosynthesis">
+                            </div>
+                            <button type="submit" class="btn btn-primary me-2">Get Recommendation</button>
+                        </form>
+
+                        <div id="recommendationResult" class="mt-4">
+                            <p>Result will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Main Panel -->
+    </div>
+    <!-- End Page Wrapper -->
+
+    <!-- Scripts -->
+    <script src="{% static 'adminhome/assets/vendors/js/vendor.bundle.base.js' %}"></script>
+    <script src="{% static 'adminhome/assets/js/off-canvas.js' %}"></script>
+    <script src="{% static 'adminhome/assets/js/misc.js' %}"></script>
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    const trimmed = cookie.trim();
+                    if (trimmed.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(trimmed.slice(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+
+        document.getElementById("recommendForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const score = parseInt(document.getElementById("score").value);
+            const last_topic = document.getElementById("last_topic").value;
+
+            fetch("/api/recommend/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({
+                    progress: {
+                        score: score,
+                        last_topic: last_topic
+                    }
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.level) {
+                    let explanationHtml = "";
+                      if (data.explanation) {
+                        explanationHtml = `<p><strong>Topic Explanation:</strong> ${data.explanation}</p>`;
+                    }
+                    document.getElementById("recommendationResult").innerHTML = `
+                    <p><strong>Level:</strong> ${data.level}</p>
+                    <p><strong>Focus:</strong> ${data.focus}</p>
+                    <p><strong>Translated Message:</strong> ${data.translated_message}</p>
+                    ${explanationHtml}
+                `;
+                } else {
+                    document.getElementById("recommendationResult").innerText = "Error: " + (data.error || "Unknown error");
+                }
+            })
+            .catch(err => {
+                document.getElementById("recommendationResult").innerText = "Fetch error!";
+            });
+        });
+    </script>
+
+</body>
+</html>

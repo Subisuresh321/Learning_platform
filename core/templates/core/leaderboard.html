@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Top Students</h1>
+        <table>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Score</th>
+                <th>Last Topic</th>
+            </tr>
+            {% for student in students %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.score }}</td>
+                <td>{{ student.last_quiz_topic }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <a href="{% url 'mypage' %}" class="btn">Back to My Page</a>
+    </div>
+</body>
+</html>

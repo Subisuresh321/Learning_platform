@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Learning Assistant Result</title>
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ student.name }}!</h1>
+
+        <section class="card">
+            <h2>Your Recommendation</h2>
+            <ul>
+                <li><strong>Level:</strong> {{ recommendation.level }}</li>
+                <li><strong>Focus:</strong> {{ recommendation.focus }}</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>Translated Message</h2>
+            <p>{{ translation }}</p>
+        </section>
+
+        <section class="card">
+            <h2>Quiz</h2>
+            <ul>
+                {% for item in quiz %}
+                <li>
+                    <strong>{{ item.question }}</strong><br>
+                    Options: {{ item.options|join:", " }}<br>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <a href="{% url 'home' %}" class="btn">Back to Home</a>
+    </div>
+</body>
+</html>

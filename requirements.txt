@@ -1,0 +1,6 @@
+django==4.2.13
+langchain
+langchain-google-genai
+google-generativeai
+google-ai-generativelanguage
+python-decouple==3.8

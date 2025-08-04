@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="display-4">Welcome to the Learning Platform</h1>
+    <p class="lead">Personalized education powered by AI agents.</p>
+</div>
+
+
+<!-- Carousel -->
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{% static 'img/carousel-1.jpg' %}" class="d-block w-100" alt="Slide 1">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'img/carousel-2.jpg' %}" class="d-block w-100" alt="Slide 2">
+        </div>
+    </div>
+</div>
+
+<!-- Features -->
+<div class="row mt-5">
+    <div class="col-md-4 text-center">
+        <img src="{% static 'img/classes-1.jpg' %}" class="img-fluid rounded mb-2" alt="AI Quiz">
+        <h4>AI Quiz Generator</h4>
+        <p>Practice with quizzes tailored to your level.</p>
+    </div>
+    <div class="col-md-4 text-center">
+        <img src="{% static 'img/classes-2.jpg' %}" class="img-fluid rounded mb-2" alt="Translator">
+        <h4>Translator Agent</h4>
+        <p>Get instant translations in your preferred language.</p>
+    </div>
+    <div class="col-md-4 text-center">
+        <img src="{% static 'img/classes-3.jpg' %}" class="img-fluid rounded mb-2" alt="Recommendations">
+        <h4>Learning Recommendations</h4>
+        <p>Receive AI-powered learning materials.</p>
+    </div>
+</div>
+
+{% endblock %}
