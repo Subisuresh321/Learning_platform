@@ -28,7 +28,21 @@
 <!-- Dummy Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
   <div class="container">
-    <a class="navbar-brand" href="{% url 'home' %}">ALL LEARN</a>
+    <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}" style="text-decoration: none;">
+    <div style="font-size: 2.25rem; font-weight: 700; margin: 0; transition: transform 0.3s ease-in-out;" 
+         onmouseover="this.style.transform='scale(1.1)'" 
+         onmouseout="this.style.transform='scale(1)'">
+        <span style="background-image: linear-gradient(to right, #fe5d37, #ffc107); 
+                     -webkit-background-clip: text; 
+                     -webkit-text-fill-color: transparent; 
+                     background-clip: text; 
+                     text-fill-color: transparent; 
+                     font-family: 'Lobster Two', cursive;">
+            <i class="fa fa-book-reader me-3"></i>ALL
+        </span>
+        <span style="color: #343a40; font-family: 'Inter', sans-serif;">LEARN</span>
+    </div>
+</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -39,13 +53,11 @@
           <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a> <!-- dummy About page -->
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="{% url 'login' %}">Login</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </a>
         </li>
       </ul>
     </div>

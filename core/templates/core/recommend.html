@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <title>User Dashboard</title>
 
-    <!-- Dashboard Template Styles -->
     <link rel="stylesheet" href="{% static 'adminhome/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'adminhome/assets/vendors/css/vendor.bundle.base.css' %}">
     <link rel="stylesheet" href="{% static 'adminhome/assets/css/style.css' %}">
@@ -14,7 +13,6 @@
 </head>
 
 <body>
-    <!-- Navbar -->
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
             <a class="navbar-brand" href="#">
@@ -46,13 +44,11 @@
         </div>
     </nav>
 
-    <!-- Page Wrapper -->
     <div class="container-fluid page-body-wrapper">
-        <!-- Sidebar -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">
+                    <a class="nav-link" href="{% url 'mypage' %}">
                         <span class="menu-title">Home</span>
                         <i class="mdi mdi-home menu-icon"></i>
                     </a>
@@ -78,7 +74,6 @@
             </ul>
         </nav>
 
-        <!-- Main Panel with RECOMMENDATION Section -->
         <div class="main-panel">
             <div class="content-wrapper">
                 <div class="card">
@@ -87,11 +82,11 @@
                         <form id="recommendForm" class="forms-sample">
                             <div class="form-group">
                                 <label for="score">Progress Score</label>
-                                <input type="number" class="form-control" id="score" name="score" value="40">
+                                <input type="text" class="form-control" id="score" name="score" value="{{ student.score }}" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="last_topic">Last Studied Topic</label>
-                                <input type="text" class="form-control" id="last_topic" name="last_topic" value="Photosynthesis">
+                                <input type="text" class="form-control" id="last_topic" name="last_topic" value="{{ student.last_quiz_topic }}">
                             </div>
                             <button type="submit" class="btn btn-primary me-2">Get Recommendation</button>
                         </form>
@@ -103,11 +98,7 @@
                 </div>
             </div>
         </div>
-        <!-- End Main Panel -->
-    </div>
-    <!-- End Page Wrapper -->
-
-    <!-- Scripts -->
+        </div>
     <script src="{% static 'adminhome/assets/vendors/js/vendor.bundle.base.js' %}"></script>
     <script src="{% static 'adminhome/assets/js/off-canvas.js' %}"></script>
     <script src="{% static 'adminhome/assets/js/misc.js' %}"></script>
@@ -133,6 +124,7 @@
         document.getElementById("recommendForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
+            // The values are read directly from the (uneditable) input fields
             const score = parseInt(document.getElementById("score").value);
             const last_topic = document.getElementById("last_topic").value;
 
@@ -153,6 +145,7 @@
             .then(data => {
                 if (data.level) {
                     let explanationHtml = "";
+                      // Check if explanation exists before adding it
                       if (data.explanation) {
                         explanationHtml = `<p><strong>Topic Explanation:</strong> ${data.explanation}</p>`;
                     }
@@ -171,6 +164,5 @@
             });
         });
     </script>
-
 </body>
 </html>

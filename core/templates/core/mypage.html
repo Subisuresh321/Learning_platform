@@ -11,6 +11,48 @@
     <link rel="stylesheet" href="{% static 'adminhome/assets/vendors/css/vendor.bundle.base.css' %}">
     <link rel="stylesheet" href="{% static 'adminhome/assets/css/style.css' %}">
     <link rel="shortcut icon" href="{% static 'adminhome/assets/images/favicon.ico' %}" />
+    <style>
+        .progress-chart-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circular-chart {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #eee;
+    stroke-width: 3.8;
+}
+
+.circle {
+    fill: none;
+    stroke-width: 3.8;
+    stroke-linecap: round;
+    /* Use your brand color */
+    stroke: #fe5d37;
+    transition: stroke-dashoffset 0.5s ease-in-out;
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+
+.progress-score-text {
+    position: absolute;
+    font-size: 2.5rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    color: #343a40;
+}
+</style>
 </head>
 
 <body>
@@ -54,7 +96,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'home' %}">
                         <span class="menu-title">Home</span>
-                        <i class="mdi mdi-home menu-icon"></i>
+                        <i class="mdi mdi-home menu-icon" style="color: var(--bs-primary);"></i>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -92,15 +134,29 @@
                     </div>
 
                     <div class="col-md-6 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Your Progress</h4>
-                                <pre>{{ user.progress|json_script:"progress-data" }}</pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                        
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Your Progress</h4>
+            <div class="progress-chart-container">
+                <svg viewBox="0 0 36 36" class="circular-chart">
+                    <path class="circle-bg"
+                        d="M18 2.0845
+                           a 15.9155 15.9155 0 0 1 0 31.831
+                           a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <path class="circle"
+                        stroke-dasharray="100, 100"
+                        d="M18 2.0845
+                           a 15.9155 15.9155 0 0 1 0 31.831
+                           a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                </svg>
+                <span class="progress-score-text">{{ student.score }}%</span>
+            </div>
+        </div>
+    </div>
+</div>
             </div>
             <!-- content-wrapper ends -->
         </div>
@@ -152,6 +208,20 @@ a
   }
 
   // Call this on button click or page load
+</script>
+<script>
+    // After your other scripts, add this block
+    window.addEventListener('load', function() {
+        const score = parseInt("{{ student.score }}");
+        const maxScore = 100;
+        
+        const circle = document.querySelector('.circular-chart .circle');
+        const circumference = 100;
+        const progress = score / maxScore;
+        const offset = circumference - progress * circumference;
+
+        circle.style.strokeDashoffset = offset;
+    });
 </script>
 
 </body>

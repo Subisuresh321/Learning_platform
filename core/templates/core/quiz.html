@@ -50,7 +50,7 @@
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">
+                    <a class="nav-link" href="{% url 'mypage' %}">
                         <span class="menu-title">Home</span>
                         <i class="mdi mdi-home menu-icon"></i>
                     </a>
@@ -84,7 +84,7 @@
                         <form id="quizForm" class="forms-sample">
                             <div class="form-group">
                                 <label for="topic">Enter Topic:</label>
-                                <input type="text" class="form-control" id="topic" name="topic" placeholder="e.g., Photosynthesis">
+                                <input type="text" class="form-control" id="topic" name="topic" value="{{ student.last_quiz_topic }}">
                             </div>
                             <button type="submit" class="btn btn-primary me-2">Generate</button>
                         </form>

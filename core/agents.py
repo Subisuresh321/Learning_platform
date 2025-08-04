@@ -21,13 +21,14 @@ def clean_and_parse_response(text):
 
 
 def learning_agent(progress):
+
     prompt = f"""
     You are an AI tutor helping rural students.
     Score: {progress.get('score')}
     Last Topic: {progress.get('last_topic')}
 
     Based on the score, determine the student's level (Beginner/Intermediate/Advanced).
-    Recommend the next topic and explain it in simple terms.
+    Recommend the next topic based on last topic and explain it in simple terms.
     Include a motivational message in easy-to-understand language.
 
     Respond ONLY in JSON like this:
@@ -57,7 +58,7 @@ def translation_agent(text, target_language):
 
 def quiz_agent(topic):
     prompt = f"""
-    Generate 3 simple quiz questions on the topic '{topic}' for a school student.
+    Generate 10 simple quiz questions on the topic '{topic}' for a school student.
     Each question must have 4 options and one correct answer.
 
     Respond ONLY in JSON (no markdown), like this:

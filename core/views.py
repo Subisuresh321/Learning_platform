@@ -48,15 +48,25 @@ def home(request):
 
 
 def quiz_page(request):
-    return render(request, 'core/quiz.html')
+    student = StudentProfile.objects.get(user=request.user)
+    context = {
+        'student': student
+    }
+    return render(request, 'core/quiz.html',context)
 
 
 def translate_page(request):
     return render(request, 'core/translate.html')
 
 
+@login_required 
 def recommend_page(request):
-    return render(request, "core/recommend.html")
+    # Retrieve the student profile for the currently logged-in user
+    student = StudentProfile.objects.get(user=request.user)
+    context = {
+        'student': student
+    }
+    return render(request, "core/recommend.html", context)
 
 
 @csrf_exempt
@@ -137,8 +147,11 @@ def logout_view(request):
 
 @login_required
 def mypage_view(request):
-    student, created = StudentProfile.objects.get_or_create(user=request.user)
-    return render(request, 'core/mypage.html', {'student': student})
+    student,created = StudentProfile.objects.get_or_create(user=request.user)
+    context ={
+        'student': student
+    }
+    return render(request, 'core/mypage.html', context)
 
 
 @csrf_exempt
