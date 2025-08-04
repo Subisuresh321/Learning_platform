@@ -47,14 +47,8 @@ def home(request):
     return render(request, "core/home.html")
 
 
-@csrf_exempt
 def quiz_page(request):
-    questions = None
-    if request.method == "POST":
-        topic = request.POST.get("topic")
-        if topic:
-            questions = quiz_agent(topic)
-    return render(request, 'core/quiz.html', {'questions': questions})
+    return render(request, 'core/quiz.html')
 
 
 def translate_page(request):

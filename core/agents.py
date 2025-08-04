@@ -79,5 +79,5 @@ def quiz_agent(topic):
     print("======================================")
 
     result = clean_and_parse_response(response.text)
-    return result.get("quiz", [])  
+    return result.get('quiz', [])  
 

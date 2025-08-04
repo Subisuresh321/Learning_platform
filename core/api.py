@@ -7,14 +7,14 @@ from rest_framework.decorators import api_view, permission_classes
 # Generate quiz based on topic or document
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def generate_quiz_view(request):
-    topic = request.data.get("topic")
+def generate_quiz(request):
+    print("hai")
+    topic = request.data.get('topic')
     if not topic:
         return Response({"error": "Topic is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-    quiz = generate_quiz(topic)
-    return Response({"quiz": quiz})
+    quiz = quiz_agent(topic)
+    return Response({'quiz': quiz})
 
 # Translate text to preferred language
 @api_view(['POST'])
